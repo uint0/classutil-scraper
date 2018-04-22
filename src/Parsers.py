@@ -51,12 +51,12 @@ parsers = {
     },
     Headings.STATUS: {
         'parser': parse_flag,
-        'out':    ('self_enrol', 'status'),
+        'out':    {'enrollment': ('self_enrol', 'status')},
         'args':   CONSENT_TOK
     },
     Headings.CAPACITY: {
         'parser': parse_enrollment,
-        'out':    ('enrolled', 'capacity', 'class_capacity'),
+        'out':    {'enrollment': ('enrolled', 'capacity', 'class_capacity')},
         'args':   None 
     },
     Headings.PFULL: {

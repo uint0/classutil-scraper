@@ -1,0 +1,206 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "stream": {
+                "type": "string",
+                "description": "Stream code"
+            },
+            "session": {
+                "type": "string",
+                "description": "Session S1,S2 for semesters 1 and 2, X1 for summary"
+            },
+            "last_updated": {
+                "type": "string",
+                "description": "Last time page data was updated"
+            },
+            "courses": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "course": {
+                            "type": "string"
+                            "description": "course code"
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "course description"
+                        },
+                        "classes": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "comp": {
+                                        "type": "string",
+                                        "description": "Activity (e.g. LEC, TUT)"
+                                    },
+                                    "sect": {
+                                        "type": "string",
+                                        "description": "Class code"
+                                    },
+                                    "class": {
+                                        "type": "string",
+                                        "description": "Class id"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "description": "Class type"
+                                    },
+                                    "enrollment": {
+                                        "type": "object",
+                                        "properties": {
+                                            "status": {
+                                                "type": "string",
+                                                "description": "Enrollment status (e.g. Open closed)"
+                                            },
+                                            "capacity": {
+                                                "type": "integer",
+                                                "description": "Effective capacity"
+                                            },
+                                            "class_capacity": {
+                                                "type": "integer",
+                                                "description": "Class capacity"
+                                            },
+                                            "enrolled": {
+                                                "type": "integer",
+                                                "description": "Total enrolled students"
+                                            },
+                                            "self_enrol": {
+                                                "type": "boolean",
+                                                "description": "Students may self enrol"
+                                            }
+                                        },
+                                        "required": [
+                                            "capacity",
+                                            "class_capacity",
+                                            "enrolled",
+                                            "self_enrol",
+                                            "status"
+                                        ]
+                                    },
+                                    "times": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "day": {
+                                                    "type": [
+                                                        "null",
+                                                        "string"
+                                                    ],
+                                                    "description": "Day of week"
+                                                },
+                                                "hours": {
+                                                    "anyOf": [
+                                                        {
+                                                            "type": "array"
+                                                        },
+                                                        {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "start": {
+                                                                    "type": "integer"
+                                                                },
+                                                                "end": {
+                                                                    "type": "integer"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "end",
+                                                                "start"
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "description": "Timetabled hours"
+                                                },
+                                                "clash": {
+                                                    "type": "boolean",
+                                                    "description": "Clash permitted"
+                                                },
+                                                "weeks": {
+                                                    "type": "array",
+                                                    "description": "Weeks class runs for",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "start": {
+                                                                "type": [
+                                                                    "integer",
+                                                                    "string"
+                                                                ],
+                                                            },
+                                                            "end": {
+                                                                "type": [
+                                                                    "integer",
+                                                                    "string"
+                                                                ]
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "end",
+                                                            "start"
+                                                        ]
+                                                    },
+                                                },
+                                                "location": {
+                                                    "type": [
+                                                        "null",
+                                                        "string"
+                                                    ],
+                                                    "description": "Location of class"
+                                                },
+                                                "comb": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ],
+                                                    "description": "Class combined with"
+                                                },
+                                                "week_rule": {
+                                                    "type": "string",
+                                                    "description": "Class runs on (odd|even|all) weeks"
+                                                }
+                                            },
+                                            "required": [
+                                                "clash",
+                                                "comb",
+                                                "day",
+                                                "hours",
+                                                "location",
+                                                "week_rule",
+                                                "weeks"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "required": [
+                                    "class",
+                                    "comp",
+                                    "enrollment",
+                                    "sect",
+                                    "times",
+                                    "type"
+                                ]
+                            }
+                        }
+                    },
+                    "required": [
+                        "classes",
+                        "course",
+                        "description"
+                    ]
+                }
+            }
+        },
+        "required": [
+            "courses",
+            "last_updated",
+            "session",
+            "stream"
+        ]
+    }
+}

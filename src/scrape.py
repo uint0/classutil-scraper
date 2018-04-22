@@ -7,44 +7,7 @@ scrape.py
 `python scrape.py <file>`
 
 A python utility to scrape `http://classutil.unsw.edu.au/`
-Data is stored a json format into a specified file. The json has a general schema
-[
-    {
-        "course":      string,
-        "description": string
-        "data": [
-            {
-                "comp":       string,
-                "sect":       string,
-                "class":      string,
-                "type":       string,
-                "enrolement": [
-                    "status":         'Open' | 'Tent' | 'Full' | 'Closed' | 'Stop' | 'Canc',
-                    "capacity":       int,
-                    "class_capacity": int,
-                    "enrolled":       int,
-                    "self_enrol":     boolean=true
-                ],
-                "times": [
-                    {
-                        "day":   string | null,
-                        "hours": {"start": int, "end": int} | null,
-                        "weeks": [
-                            {"start": int | string, "end": int | string},
-                            ...
-                        ],
-                        "location":  string | null,
-                        "clash":     boolean,
-                        "combined":  string | null,
-                        "week_rule": 'all' | 'odd' | 'even'
-                    },
-                    ...
-                ]
-            },
-            ...
-        ]
-    }
-]
+Data is stored a json format into a specified file.
 
 """
 
@@ -63,7 +26,7 @@ def reformat_page(page):
     # matches  n/m [k] where k is optional
 
     for course in page:
-        enrollment = {
+        course["enrollment"] = {
             "status":         None,
             "capacity":       -1,
             "class_capacity": -1,
@@ -83,13 +46,20 @@ def reformat_page(page):
             output = parser(course[heading], parse_conf['args'])
 
             # 3. Unpack the output into course
+            out = parse_conf['out']
+            key = None
+            if isinstance(out, dict):
+                key = tuple(out.keys())[0]
+                out = tuple(out.values())[0]
+
             for i,v in enumerate(output):
-                course[parse_conf['out'][i]] = v 
+                if key is None:
+                    course[out[i]] = v
+                else:
+                    course[key][out[i]] = v
 
             # 4. Delete the heading
             del course[heading]
-
-        course["enrollment"] = enrollment
 
     return page
     
