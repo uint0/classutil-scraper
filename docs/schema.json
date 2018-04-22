@@ -131,7 +131,7 @@
                                                                 "type": [
                                                                     "integer",
                                                                     "string"
-                                                                ],
+                                                                ]
                                                             },
                                                             "end": {
                                                                 "type": [
@@ -144,7 +144,7 @@
                                                             "end",
                                                             "start"
                                                         ]
-                                                    },
+                                                    }
                                                 },
                                                 "location": {
                                                     "type": [
