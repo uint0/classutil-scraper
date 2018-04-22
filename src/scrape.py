@@ -15,10 +15,7 @@ from Scraper import WebScraper
 from Parsers import parsers
 from util import extract_table, extract_links, get_latest_update
 import json
-import sys
 
-
-CONSENT_TOK      = "*"
 BASE_URI         = "http://classutil.unsw.edu.au/"
 
 def reformat_page(page):
@@ -123,6 +120,7 @@ def do_scrape(pages, output):
     
 
 if __name__ == '__main__':
+    import sys
     scraper = WebScraper(BASE_URI)
 
     try:
@@ -139,7 +137,7 @@ if __name__ == '__main__':
     latest_update = get_latest_update(base)
     pages = extract_links(base, 'td', 'data')
 
-    do_scrape(pages[:2], output)
+    do_scrape(pages, output)
 
     output.write(']')
 
