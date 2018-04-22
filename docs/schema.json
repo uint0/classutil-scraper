@@ -22,7 +22,7 @@
                     "type": "object",
                     "properties": {
                         "course": {
-                            "type": "string"
+                            "type": "string",
                             "description": "course code"
                         },
                         "description": {
