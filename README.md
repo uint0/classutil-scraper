@@ -19,4 +19,4 @@ python scrape.py <output file>
 
 Output Schema
 ---
-The jsonschema can be found in the docs folder.
+The jsonschema can be found in the docs folder. A human readable version can also be found in that directory.

@@ -1,0 +1,47 @@
+[
+    {
+        "stream": "string",
+        "session": "string",
+        "last_updated": "string",
+        "courses": [
+            {
+                "course": "string",
+                "description": "string",
+                "classes": [
+                    {
+                        "comp": "string",
+                        "sect": "string",
+                        "class": "string",
+                        "type": "string",
+                        "enrollment": {
+                            "status": "string",
+                            "capacity": "integer",
+                            "class_capacity": "integer",
+                            "enrolled": "integer",
+                            "self_enrol": "boolean"
+                        },
+                        "times": [
+                            {
+                                "day": "null|string",
+                                "hours": {
+                                    "start": "integer",
+                                    "end": "integer"
+                                },
+                                "clash": "boolean",
+                                "weeks": [
+                                    {
+                                        "start": "integer|string",
+                                        "end": "integer|string"
+                                    }
+                                ],
+                                "location": "null|string",
+                                "comb": "string|null",
+                                "week_rule": "string"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]
