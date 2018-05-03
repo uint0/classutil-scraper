@@ -18,6 +18,22 @@ import json
 
 BASE_URI = "http://classutil.unsw.edu.au/"
 
+def normalize(scraped):
+    """ Turns the return format from do_scrape into the schema type """
+    normal = []
+    for dat in scraped:
+        url = dat['url']
+        res = dat['res']
+
+        spec, sess = url.split('.')[0].split('_')
+        normal.append({
+            "specialisation": spec,
+            "session":        sess,
+            "last_updated":   res['last_updated'],
+            "courses":        res['courses']
+        })
+    return normal
+
 def reformat_page(page):
     """ Reformats the enrollment and time to fit the schema """
     # matches  n/m [k] where k is optional
@@ -60,24 +76,6 @@ def reformat_page(page):
 
     return page
 
-
-def ret_hook(res, url, out_buf, arg):
-    """ A simple hook to save the result to a file before continuing """
-    specialisation, sess = url.split('.')[0].split('_')
-
-    json.dump({
-        "specialisation": specialisation,
-        "session":        sess,
-        "last_updated":   res["last_updated"],
-        "courses":        res["courses"]
-    }, arg[0])
-
-    # hacky concating to list in file
-    if url != arg[1]:
-        arg[0].write(',')
-    arg[0].flush()
-
-
 def parse_page(html, *args):
     """ Given the html of a specialisation page, extract the courses, and their associted data """
 
@@ -108,35 +106,26 @@ def parse_page(html, *args):
         "courses":      dat
     }
 
-
-def do_scrape(pages, output):
+def do_scrape(pages):
     """ Driver to call the get_batch method in scraper """
-    scraper.get_batch(pages,
-                      page_hook=parse_page,
-                      ret_hook=(ret_hook, [output, pages[-1]]),
-                      verbose=True)
+    return scraper.get_batch(pages,
+                             page_hook=parse_page,
+                             verbose=True)
 
 
 if __name__ == '__main__':
     import sys
-    scraper = WebScraper(BASE_URI)
 
-    try:
-        output = open(sys.argv[1], 'w')
-    except IndexError:
+    if len(sys.argv) < 2:
         print("Usage: {} <file>".format(sys.argv[0]))
         exit(1)
 
-    output.write('[')
-
+    scraper = WebScraper(BASE_URI)
     latest_update = ""  # todo: something with this
     base = scraper.get_html()
 
     latest_update = get_latest_update(base)
     pages = extract_links(base, 'td', 'data')
 
-    do_scrape(pages, output)
-
-    output.write(']')
-
-    output.close()
+    dat = do_scrape(pages)
+    json.dump(normalize(dat), open(sys.argv[1], 'w'))

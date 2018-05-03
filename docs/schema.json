@@ -103,15 +103,21 @@
                                                             "type": "object",
                                                             "properties": {
                                                                 "start": {
-                                                                    "type": "integer"
+                                                                    "type": [
+                                                                        "integer",
+                                                                        "string"
+                                                                    ]
                                                                 },
                                                                 "end": {
-                                                                    "type": "integer"
+                                                                    "type": [
+                                                                        "integer",
+                                                                        "string"
+                                                                    ]
                                                                 }
                                                             },
                                                             "required": [
-                                                                "end",
-                                                                "start"
+                                                                "start",
+                                                                "end"
                                                             ]
                                                         }
                                                     ],
@@ -200,7 +206,7 @@
             "courses",
             "last_updated",
             "session",
-            "stream"
+            "specialisation"
         ]
     }
 }

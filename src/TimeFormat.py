@@ -39,20 +39,19 @@ class TimeFormatService():
         self.clash     = False
         self.weeks     = []
         self.location  = None
-        self.comb      = None 
+        self.comb      = None
         self.week_rule = TimeFormatService.WEEK_ALL
 
     @staticmethod
-    def format_session(d):
+    def format_session(d, intify=True):
         """ Given a array d [1, 2] or [1] it turns it into a dict with keys start, end """
         d = tuple(map(
-                lambda x: int(x) if x.isdigit() else x,  # Try parsing to int
+                lambda x: int(x) if intify and x.isdigit() else x,  # Try parsing to int
                 filter(lambda x: len(x.strip()) > 0, d)  # Filter out empty strings
             ))
 
         end = d[0] if len(d) < 2 else d[1]
         return {'start': d[0], 'end': end}
-
 
     @staticmethod
     def is_time_sessions(s):
@@ -64,7 +63,6 @@ class TimeFormatService():
         """ Given a string, determine if it is in the format of a prefix """
         days = ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
         return s[:3] in days
-
 
     def extract_time_sessions(self, s):
         """ Given a string containing sessions data, extract it into the class """
@@ -102,7 +100,7 @@ class TimeFormatService():
             self.clash, hours = parse_flag(hours, TimeFormatService.FLAG_CLASH)
 
             # 3.1 add the hours
-            self.hours = TimeFormatService.format_session(hours.split('-'))
+            self.hours = TimeFormatService.format_session(hours.split('-'), intify=False)
 
     def extract_time_suffix(self, s):
         """ Given a string containing suffix data, extract it into the class """
@@ -146,4 +144,3 @@ class TimeFormatService():
     def as_json(self):
         """ Returns a json string representation of the kye fields in the class """
         return json.dumps(self.as_dict())
-
