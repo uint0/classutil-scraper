@@ -76,6 +76,8 @@ class TimeFormatService():
 
         # 3. Check the nature of the parts
         for part in parts:
+            if len(part) == 0:
+                continue
             # 3.1 if parts is length one, then we need to distinguish between the two
             if part[0] == 'w':
                 # 3.1.1 if the first letter is 'w', then we are looking at weeks

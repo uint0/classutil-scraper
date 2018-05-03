@@ -16,7 +16,7 @@ from Parsers import parsers
 from util import extract_table, extract_links, get_latest_update
 import json
 
-BASE_URI         = "http://classutil.unsw.edu.au/"
+BASE_URI = "http://classutil.unsw.edu.au/"
 
 def reformat_page(page):
     """ Reformats the enrollment and time to fit the schema """
@@ -49,7 +49,7 @@ def reformat_page(page):
                 key = tuple(out.keys())[0]
                 out = tuple(out.values())[0]
 
-            for i,v in enumerate(output):
+            for i, v in enumerate(output):
                 if key is None:
                     course[out[i]] = v
                 else:
@@ -59,20 +59,18 @@ def reformat_page(page):
             del course[heading]
 
     return page
-    
 
 
 def ret_hook(res, url, out_buf, arg):
     """ A simple hook to save the result to a file before continuing """
-    stream, sess = url.split('.')[0].split('_')
+    specialisation, sess = url.split('.')[0].split('_')
 
     json.dump({
-        "stream":       stream,
-        "session":      sess,
-        "last_updated": res["last_updated"],
-        "courses":      res["courses"]
+        "specialisation": specialisation,
+        "session":        sess,
+        "last_updated":   res["last_updated"],
+        "courses":        res["courses"]
     }, arg[0])
-
 
     # hacky concating to list in file
     if url != arg[1]:
@@ -81,15 +79,15 @@ def ret_hook(res, url, out_buf, arg):
 
 
 def parse_page(html, *args):
-    """ Given the html of a stream page, extract the courses, and their associted data """
+    """ Given the html of a specialisation page, extract the courses, and their associted data """
 
     rows = extract_table(html.find_all('table')[2])
 
-    headings = tuple(map(lambda x: x.lower(), next(rows))) 
+    headings = tuple(map(lambda x: x.lower(), next(rows)))
 
     dat = []
     cur_dat = []
-    cur_head = next(rows)  # preread the first course row 
+    cur_head = next(rows)  # preread the first course row
 
     for row in rows:
         # if the number of columns is 2 then we are on a course desc row
@@ -103,7 +101,7 @@ def parse_page(html, *args):
             cur_dat = []
             cur_head = row
         else:
-            cur_dat.append({ headings[i]: val for i, val in enumerate(row) })
+            cur_dat.append({headings[i]: val for i, val in enumerate(row)})
 
     return {
         "last_updated": get_latest_update(html),
@@ -117,7 +115,7 @@ def do_scrape(pages, output):
                       page_hook=parse_page,
                       ret_hook=(ret_hook, [output, pages[-1]]),
                       verbose=True)
-    
+
 
 if __name__ == '__main__':
     import sys
@@ -132,7 +130,7 @@ if __name__ == '__main__':
     output.write('[')
 
     latest_update = ""  # todo: something with this
-    base = scraper.get_html() 
+    base = scraper.get_html()
 
     latest_update = get_latest_update(base)
     pages = extract_links(base, 'td', 'data')
@@ -142,4 +140,3 @@ if __name__ == '__main__':
     output.write(']')
 
     output.close()
-

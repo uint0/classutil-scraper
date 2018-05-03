@@ -4,9 +4,9 @@
     "items": {
         "type": "object",
         "properties": {
-            "stream": {
+            "specialisation": {
                 "type": "string",
-                "description": "Stream code"
+                "description": "Specialisation code"
             },
             "session": {
                 "type": "string",

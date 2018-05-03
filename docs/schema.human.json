@@ -1,6 +1,6 @@
 [
     {
-        "stream": "string",
+        "specialisation": "string",
         "session": "string",
         "last_updated": "string",
         "courses": [
