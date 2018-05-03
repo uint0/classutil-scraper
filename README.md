@@ -1,6 +1,13 @@
 # classutil-scraper
 A python scraper for http://classutil.unsw.edu.au/
 
+Installation
+---
+This scraper is avaliable through pip
+```
+pip3 install classutil-scraper
+```
+
 Setup
 ---
 The scraper can be setup with the requirements.txt
