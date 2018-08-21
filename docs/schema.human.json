@@ -1,47 +1,39 @@
-[
-    {
-        "specialisation": "string",
-        "session": "string",
-        "last_updated": "string",
-        "courses": [
+{
+    "course_code": {
+        "description": "string",
+        "classes": [
             {
-                "course": "string",
-                "description": "string",
-                "classes": [
+                "comp": "string",
+                "sect": "string",
+                "class": "string",
+                "type": "string",
+                "enrollment": {
+                    "status": "string",
+                    "capacity": "integer",
+                    "class_capacity": "integer",
+                    "enrolled": "integer",
+                    "self_enrol": "boolean"
+                },
+                "times": [
                     {
-                        "comp": "string",
-                        "sect": "string",
-                        "class": "string",
-                        "type": "string",
-                        "enrollment": {
-                            "status": "string",
-                            "capacity": "integer",
-                            "class_capacity": "integer",
-                            "enrolled": "integer",
-                            "self_enrol": "boolean"
+                        "day": "null|string",
+                        "hours": {
+                            "start": "integer|float",
+                            "end": "integer|float"
                         },
-                        "times": [
+                        "clash": "boolean",
+                        "weeks": [
                             {
-                                "day": "null|string",
-                                "hours": {
-                                    "start": "integer",
-                                    "end": "integer"
-                                },
-                                "clash": "boolean",
-                                "weeks": [
-                                    {
-                                        "start": "integer|string",
-                                        "end": "integer|string"
-                                    }
-                                ],
-                                "location": "null|string",
-                                "comb": "string|null",
-                                "week_rule": "string"
+                                "start": "integer|string",
+                                "end": "integer|string"
                             }
-                        ]
+                        ],
+                        "location": "null|string",
+                        "comb": "string|null",
+                        "week_rule": "string"
                     }
                 ]
             }
         ]
     }
-]
+}
