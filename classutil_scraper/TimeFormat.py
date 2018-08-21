@@ -43,15 +43,31 @@ class TimeFormatService():
         self.week_rule = TimeFormatService.WEEK_ALL
 
     @staticmethod
-    def format_session(d, intify=True):
+    def time_to_num(t):
+        if t.isdigit(): return int(t)
+        try:
+            hr, mn = t.split(':')
+            return int(hr) + int(mn)/60
+        except:
+            return t
+
+    @staticmethod
+    def format_session(d):
         """ Given a array d [1, 2] or [1] it turns it into a dict with keys start, end """
         d = tuple(map(
-                lambda x: int(x) if intify and x.isdigit() else x,  # Try parsing to int
+                TimeFormatService.time_to_num,
                 filter(lambda x: len(x.strip()) > 0, d)  # Filter out empty strings
             ))
 
-        end = d[0] if len(d) < 2 else d[1]
+        if len(d) < 2:
+            try:
+                end = int(d[0])+1
+            except:
+                end = d[0]
+        else:
+            end = d[1]
         return {'start': d[0], 'end': end}
+
 
     @staticmethod
     def is_time_sessions(s):
@@ -64,6 +80,7 @@ class TimeFormatService():
         days = ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
         return s[:3] in days
 
+
     def extract_time_sessions(self, s):
         """ Given a string containing sessions data, extract it into the class """
         # 1. Strip off brackets
@@ -74,8 +91,6 @@ class TimeFormatService():
 
         # 3. Check the nature of the parts
         for part in parts:
-            if len(part) == 0:
-                continue
             # 3.1 if parts is length one, then we need to distinguish between the two
             if part[0] == 'w':
                 # 3.1.1 if the first letter is 'w', then we are looking at weeks
@@ -100,7 +115,7 @@ class TimeFormatService():
             self.clash, hours = parse_flag(hours, TimeFormatService.FLAG_CLASH)
 
             # 3.1 add the hours
-            self.hours = TimeFormatService.format_session(hours.split('-'), intify=False)
+            self.hours = TimeFormatService.format_session(hours.split('-'))
 
     def extract_time_suffix(self, s):
         """ Given a string containing suffix data, extract it into the class """
@@ -144,3 +159,4 @@ class TimeFormatService():
     def as_json(self):
         """ Returns a json string representation of the kye fields in the class """
         return json.dumps(self.as_dict())
+

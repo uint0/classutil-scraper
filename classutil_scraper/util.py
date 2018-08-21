@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
 import unicodedata
-import json
 
 def sanitize(s):
     """ Given a string, strips is and reencodes any format characters """
     return unicodedata.normalize("NFKD", s).strip()
 
 def get_latest_update(html):
-    """ Extracts the "latest update" field from a stream_page """
+    """ Extracts the "latest update" field from a specialization_page """
     return sanitize(html.find('b').text)
 
 def get_row_values(row):
     """ Given a row of a table, extracts the text associated with each column """
-    vals = [] 
+    vals = []
     for col in row.find_all('td'):
         vals.append(sanitize(col.text))
     return tuple(vals)
@@ -26,7 +25,6 @@ def extract_links(html, parent_tag, parent_class):
     return [
         a.get('href')  # get the href of the anchor
         for a in filter(lambda x: x is not None, [  # for anchors that are in a <tag>.<class>
-            col.find('a') for col in html.find_all(parent_tag, {'class': parent_class}) 
+            col.find('a') for col in html.find_all(parent_tag, {'class': parent_class})
         ])
     ]
-
