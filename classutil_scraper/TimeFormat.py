@@ -43,25 +43,26 @@ class TimeFormatService():
         self.week_rule = TimeFormatService.WEEK_ALL
 
     @staticmethod
-    def time_to_num(t):
-        if t.isdigit(): return int(t)
+    def time_to_num(t, minutes=False):
+        if t.isdigit(): return (60 if minutes else 1) * int(t)
+
         try:
             hr, mn = t.split(':')
-            return int(hr) + int(mn)/60
+            return (60 if minutes else 1) * int(hr) + int(mn)
         except:
             return t
 
     @staticmethod
-    def format_session(d):
+    def format_session(d, minutes=False):
         """ Given a array d [1, 2] or [1] it turns it into a dict with keys start, end """
         d = tuple(map(
-                TimeFormatService.time_to_num,
+                lambda x: TimeFormatService.time_to_num(x, minutes),
                 filter(lambda x: len(x.strip()) > 0, d)  # Filter out empty strings
             ))
 
         if len(d) < 2:
             try:
-                end = int(d[0])+1
+                end = int(d[0]) + (60 if minutes else 1)
             except:
                 end = d[0]
         else:
@@ -115,7 +116,7 @@ class TimeFormatService():
             self.clash, hours = parse_flag(hours, TimeFormatService.FLAG_CLASH)
 
             # 3.1 add the hours
-            self.hours = TimeFormatService.format_session(hours.split('-'))
+            self.hours = TimeFormatService.format_session(hours.split('-'), minutes=True)
 
     def extract_time_suffix(self, s):
         """ Given a string containing suffix data, extract it into the class """

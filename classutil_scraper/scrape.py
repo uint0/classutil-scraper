@@ -67,8 +67,10 @@ def ret_hook(res, url, out_buf, arg):
 
     for course in res['courses']:
         course_code = course['course']
+        course['sess'] = sess
         del course['course']
-        arg[0].write('"{}": {}'.format(course_code, json.dumps(course)))
+        arg[0].write('"{}": {}'.format(course_code, json.dumps(course)) + (',' if course != res['courses'][-1] else ''))
+
     # hacky concating to list in file
     if url != arg[1]:
         arg[0].write(',')
@@ -129,7 +131,7 @@ if __name__ == '__main__':
     try:
         output = open(sys.argv[1], 'w')
     except IndexError:
-        print("Usage: {} <adaptors> <file>".format(sys.argv[0]))
+        print("Usage: {} <file>".format(sys.argv[0]))
         exit(1)
 
     output.write('{')
