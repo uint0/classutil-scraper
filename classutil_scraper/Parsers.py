@@ -30,13 +30,13 @@ enrol_re
 --------
 (\d{1,})      Group 1:    Capture 1 or more digit characters          (enrolled)
 \/            NC:         Match '/' literal
-(\d{1,})      Group 2:    Capture 1 or more digit characters          (capacity)
+(-?\d{1,})      Group 2:    Capture 1 or more digit characters          (capacity)
 (?:\s\[       NC:       \ Match whitespace followed by a '[' literal
     (\d{1,})  Group 3:  | Capture 1 or more digit characters          (class_capacity)
 \])           NC:       | Match a '[' literal 
 ?             Optional: /
 """
-enrol_re = re.compile(r"(\d{1,})\/(\d{1,})(?:\s\[(\d{1,})\])?")
+enrol_re = re.compile(r"(\d{1,})\/(-?\d{1,})(?:\s\[(\d{1,})\])?")
 def parse_enrollment(enr_string, *args):
     found = list(enrol_re.findall(enr_string)[0])
     found[2] = found[1] if len(found[2]) == 0 else found[2]

@@ -7,7 +7,10 @@ def sanitize(s):
 
 def get_latest_update(html):
     """ Extracts the "latest update" field from a specialization_page """
-    return sanitize(html.find('b').text)
+    try:
+        return sanitize(html.find('b').text)
+    except:
+        return sanitize(html.find('strong').text)
 
 def get_row_values(row):
     """ Given a row of a table, extracts the text associated with each column """
